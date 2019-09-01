@@ -14,12 +14,12 @@ export default new Vuex.Store({
     total: 0,
     log: [],
     categories: [
-      { name: "Single" },
-      { name: "Double" },
-      { name: "Treble" },
-      { name: "Outer Bull", score: 25 },
-      { name: "Bull", score: 50 },
-      { name: "Miss", score: 0 }
+      { name: "Single", multiplyer: 1 },
+      { name: "Double", multiplyer: 2 },
+      { name: "Treble", multiplyer: 3 },
+      { name: "Outer Bull", score: 25, multiplyer: 1 },
+      { name: "Bull", score: 50, multiplyer: 1 },
+      { name: "Miss", score: 0, multiplyer: 1 }
     ],
     multiplyer: 1
   },
@@ -82,6 +82,10 @@ export default new Vuex.Store({
       state.showSingles = !state.showSingles;
     },
 
+    clearSingles(state) {
+      state.showSingles = false;
+    },
+
     setMultiplyer(state, value) {
       state.multiplyer = value;
     }
@@ -91,8 +95,13 @@ export default new Vuex.Store({
     recordThrow({ commit }, score) {
       commit("addThrow", score);
       commit("incrementDart");
-      commit("toggleSingles");
+      commit("clearSingles");
       commit("setMultiplyer", 1);
+    },
+
+    selectSegment({ commit }, multiplyer) {
+      commit("toggleSingles");
+      commit("setMultiplyer", multiplyer);
     },
 
     reset({ commit }) {
