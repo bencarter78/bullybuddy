@@ -12,18 +12,14 @@ class Player {
     this.remainingInLeg = points;
   }
 
-  throwScore() {
-    return this.darts.reduce(
-      (carry, item) => (item === null ? 0 : carry + parseInt(item)),
-      0
-    );
+  get throwScore() {
+    return this.darts
+      .filter(Number)
+      .reduce((carry, item) => carry + parseInt(item), 0);
   }
 
-  get inThrowScore() {
-    return this.darts.reduce(
-      (carry, item) => (item === null ? 0 : carry + parseInt(item)),
-      0
-    );
+  get remaining() {
+    return this.remainingInLeg - this.throwScore;
   }
 
   scoreDart(dart, score) {
@@ -31,24 +27,32 @@ class Player {
   }
 
   logDarts() {
+    if (this.hasBust) {
+      this.resetDarts();
+    }
+
     this.logs.push(this.darts);
-    this.setRemainingInLeg(this.remainingInLeg - this.throwScore());
+    this.setRemainingInLeg(this.remainingInLeg - this.throwScore);
+    this.resetDarts();
+  }
+
+  resetDarts() {
     this.darts = [null, null, null];
   }
 
-  hasBust() {
-    if (this.hasCheckedOut()) {
+  get hasBust() {
+    if (this.hasCheckedOut) {
       return false;
     }
 
-    return this.remainingInLeg < 2;
+    return this.remaining < 2;
   }
 
-  hasCheckedOut() {
-    return this.remainingInLeg === 0;
+  get hasCheckedOut() {
+    return this.remaining === 0;
   }
 
-  hasHadTurn() {
+  get hasHadTurn() {
     return this.darts.filter(Number).length === 3;
   }
 }

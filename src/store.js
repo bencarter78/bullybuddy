@@ -26,7 +26,7 @@ export default new Vuex.Store({
 
   getters: {
     canStartGame(state) {
-      return state.players.length > 0 && state.game;
+      return state.players.length && state.game;
     },
 
     player(state) {

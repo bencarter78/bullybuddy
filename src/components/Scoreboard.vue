@@ -33,7 +33,7 @@
           {{ p.legs }}
         </div>
         <div class="w-1/4 text-center">
-          {{ p.remainingInLeg - p.inThrowScore }}
+          {{ p.remaining }}
         </div>
       </div>
     </div>
@@ -41,12 +41,11 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from "vuex";
+import { mapState } from "vuex";
 
 export default {
   computed: {
-    ...mapState(["currentPlayer", "players"]),
-    ...mapGetters(["throwScore"])
+    ...mapState(["currentPlayer", "players"])
   }
 };
 </script>
