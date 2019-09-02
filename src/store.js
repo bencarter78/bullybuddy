@@ -11,6 +11,7 @@ export default new Vuex.Store({
     segments: [...Array(21).keys()].reverse().slice(0, 20),
     darts: [],
     currentDart: 1,
+    currentPlayer: 0,
     showSingles: false,
     log: [],
     categories: [
@@ -70,6 +71,10 @@ export default new Vuex.Store({
       }
     },
 
+    updatePlayerScore(state, score) {
+      state.players[state.currentPlayer].score(score);
+    },
+
     setPlayers(state, count) {
       [...Array(count).keys()].forEach(p => {
         state.players.push(new Player(`Player ${p + 1}`));
@@ -77,6 +82,7 @@ export default new Vuex.Store({
     },
 
     setGame(state, game) {
+      state.players.forEach(p => p.setRemainingInLeg(game));
       state.game = game;
     },
 
@@ -90,11 +96,27 @@ export default new Vuex.Store({
 
     setMultiplyer(state, value) {
       state.multiplyer = value;
+    },
+
+    logDarts(state) {
+      state.players[state.currentPlayer].logDarts(state.darts);
+    },
+
+    resetDarts(state) {
+      state.darts = [];
+      state.currentDart = 1;
+    },
+
+    switchPlayer(state) {
+      if (state.players.length == 2) {
+        state.currentPlayer = state.currentPlayer == 0 ? 1 : 0;
+      }
     }
   },
 
   actions: {
     recordThrow({ commit }, score) {
+      commit("updatePlayerScore", score);
       commit("addThrow", score);
       commit("incrementDart");
       commit("clearSingles");
@@ -109,6 +131,12 @@ export default new Vuex.Store({
     reset({ commit }) {
       commit("setPlayers", 0);
       commit("setGame", null);
+    },
+
+    endTurn({ commit }) {
+      commit("logDarts");
+      commit("switchPlayer");
+      commit("resetDarts");
     }
   }
 });
