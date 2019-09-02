@@ -9,7 +9,7 @@
         </div>
 
         <div class="w-2/3 mx-auto">
-          <div v-if="players === 0" class="flex flex-col">
+          <div v-if="players.length === 0" class="flex flex-col">
             <button
               @click="setPlayers(1)"
               class="bg-red-700 py-4 text-red-100 text-center rounded mt-16"
@@ -25,7 +25,7 @@
             </button>
           </div>
 
-          <div v-if="players > 0 && !game" class="flex flex-col">
+          <div v-if="players.length > 0 && !game" class="flex flex-col">
             <button
               @click="setGame(501)"
               class="bg-red-700 py-4 text-red-100 text-center rounded mt-16"

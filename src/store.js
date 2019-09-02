@@ -1,17 +1,17 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import Player from "./player";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    players: 0,
+    players: [],
     game: "",
     segments: [...Array(21).keys()].reverse().slice(0, 20),
     darts: [],
     currentDart: 1,
     showSingles: false,
-    total: 0,
     log: [],
     categories: [
       { name: "Single", multiplyer: 1 },
@@ -30,7 +30,7 @@ export default new Vuex.Store({
     },
 
     canStartGame(state) {
-      return state.players > 0 && state.game;
+      return state.players.length > 0 && state.game;
     },
 
     displayDarts(state) {
@@ -71,7 +71,9 @@ export default new Vuex.Store({
     },
 
     setPlayers(state, count) {
-      state.players = count;
+      [...Array(count).keys()].forEach(p => {
+        state.players.push(new Player(`Player ${p + 1}`));
+      });
     },
 
     setGame(state, game) {
