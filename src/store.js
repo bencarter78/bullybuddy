@@ -9,7 +9,6 @@ export default new Vuex.Store({
     players: [],
     game: "",
     segments: [...Array(21).keys()].reverse().slice(0, 20),
-    darts: [],
     currentDart: 1,
     currentPlayer: 0,
     showSingles: false,
@@ -26,16 +25,12 @@ export default new Vuex.Store({
   },
 
   getters: {
-    throwScore(state) {
-      return state.darts.reduce((carry, item) => carry + parseInt(item), 0);
-    },
-
     canStartGame(state) {
       return state.players.length > 0 && state.game;
     },
 
-    displayDarts(state) {
-      return state.darts.join("+");
+    player(state) {
+      return state.players[state.currentPlayer];
     }
   },
 
@@ -57,22 +52,11 @@ export default new Vuex.Store({
       state.showSingles = false;
     },
 
-    addThrow(state, score) {
-      if (state.darts[state.currentDart - 1]) {
-        return state.darts.splice(
-          state.currentDart - 1,
-          1,
-          score * state.multiplyer
-        );
-      }
-
-      if (state.darts.length < 3) {
-        state.darts.push(score * state.multiplyer);
-      }
-    },
-
-    updatePlayerScore(state, score) {
-      state.players[state.currentPlayer].score(score);
+    addThrownDart(state, score) {
+      return state.players[state.currentPlayer].scoreDart(
+        state.currentDart - 1,
+        score * state.multiplyer
+      );
     },
 
     setPlayers(state, count) {
@@ -99,15 +83,15 @@ export default new Vuex.Store({
     },
 
     logDarts(state) {
-      state.players[state.currentPlayer].logDarts(state.darts);
+      state.players[state.currentPlayer].logDarts();
     },
 
     resetDarts(state) {
-      state.darts = [];
       state.currentDart = 1;
     },
 
     switchPlayer(state) {
+      // We only want to switch the players if there are 2 players
       if (state.players.length == 2) {
         state.currentPlayer = state.currentPlayer == 0 ? 1 : 0;
       }
@@ -116,8 +100,7 @@ export default new Vuex.Store({
 
   actions: {
     recordThrow({ commit }, score) {
-      commit("updatePlayerScore", score);
-      commit("addThrow", score);
+      commit("addThrownDart", score);
       commit("incrementDart");
       commit("clearSingles");
       commit("setMultiplyer", 1);

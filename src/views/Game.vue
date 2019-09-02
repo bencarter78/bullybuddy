@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="player">
     <div class="text-gray-100 px-8 py-4">
       <div class="flex justify-center font-logo text-3xl">
         <router-link :to="{ name: 'home' }">
@@ -20,7 +20,9 @@
             class="w-1/3 text-center px-3 py-1 rounded text-gray-500"
             :class="{ 'text-green-100 bg-green-700': currentDart == n }"
           >
-            <span v-if="darts.length >= n"> D{{ n }}: {{ darts[n - 1] }} </span>
+            <span v-if="player.darts.length >= n">
+              D{{ n }}: {{ player.darts[n - 1] }}
+            </span>
 
             <span v-else> Dart {{ n }} </span>
           </li>
@@ -31,7 +33,7 @@
         <div class="flex flex-col">
           <div>
             <button
-              v-if="darts.length == 3"
+              v-if="player.hasHadTurn()"
               @click="endTurn"
               class="w-full py-4 mx-auto rounded text-gray-800 border bg-gray-100 mt-4 text-center uppercase tracking-wider"
             >
@@ -81,17 +83,22 @@ import Scoreboard from "@/components/Scoreboard";
 
 export default {
   components: { Scoreboard },
+
+  mounted() {
+    if (!this.player) {
+      this.$router.push("/");
+    }
+  },
+
   computed: {
     ...mapState([
       "categories",
       "currentDart",
       "game",
       "segments",
-      "total",
-      "darts",
       "showSingles"
     ]),
-    ...mapGetters(["displayDarts", "throwScore"])
+    ...mapGetters(["player"])
   },
 
   methods: {
