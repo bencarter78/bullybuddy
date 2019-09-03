@@ -14,12 +14,18 @@ export default new Vuex.Store({
     showSingles: false,
     log: [],
     categories: [
-      { name: "Single", multiplyer: 1 },
-      { name: "Double", multiplyer: 2 },
-      { name: "Treble", multiplyer: 3 },
-      { name: "Outer Bull", score: 25, multiplyer: 1 },
-      { name: "Bull", score: 50, multiplyer: 1 },
-      { name: "Miss", score: 0, multiplyer: 1 }
+      // { name: "Single", multiplyer: 1 },
+      // { name: "Double", multiplyer: 2 },
+      // { name: "Treble", multiplyer: 3 },
+      // { name: "Outer Bull", score: 25, multiplyer: 1 },
+      // { name: "Bull", score: 50, multiplyer: 1 },
+      // { name: "Miss", score: 0, multiplyer: 1 }
+      { name: "x1", multiplyer: 1 },
+      { name: "x2", multiplyer: 2 },
+      { name: "x3", multiplyer: 3 },
+      { name: "OB", score: 25, multiplyer: 1 },
+      { name: "B", score: 50, multiplyer: 1 },
+      { name: "-", score: 0, multiplyer: 1 }
     ],
     multiplyer: 1
   },
@@ -95,6 +101,10 @@ export default new Vuex.Store({
       if (state.players.length == 2) {
         state.currentPlayer = state.currentPlayer == 0 ? 1 : 0;
       }
+    },
+
+    addLegToPlayer(state) {
+      state.players[state.currentPlayer].addLeg();
     }
   },
 
@@ -120,6 +130,12 @@ export default new Vuex.Store({
       commit("logDarts");
       commit("switchPlayer");
       commit("resetDarts");
+    },
+
+    legWon({ dispatch, commit, state }) {
+      commit("addLegToPlayer");
+      dispatch("endTurn");
+      commit("setGame", state.game);
     }
   }
 });

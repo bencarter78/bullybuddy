@@ -41,19 +41,28 @@ class Player {
   }
 
   get hasBust() {
-    if (this.hasCheckedOut) {
+    if (this.hasWonLeg) {
       return false;
     }
 
     return this.remaining < 2;
   }
 
-  get hasCheckedOut() {
+  get hasWonLeg() {
     return this.remaining === 0;
   }
 
   get hasHadTurn() {
-    return this.darts.filter(Number).length === 3;
+    return this.darts.filter(x => typeof x === "number").length === 3;
+  }
+
+  addLeg() {
+    if (this.legs < 2) {
+      return (this.legs += 1);
+    }
+
+    this.legs = 0;
+    this.sets += 1;
   }
 }
 

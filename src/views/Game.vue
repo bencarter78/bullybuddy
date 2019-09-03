@@ -11,8 +11,14 @@
         <Scoreboard />
       </div>
 
-      <div class="mt-8">
-        <DartsButtons />
+      <div class="mt-4">
+        <div class="text-center text-6xl tracking-widest">
+          <span class="">
+            {{ player.throwScore }}
+          </span>
+        </div>
+
+        <DartsButtons class="mt-8" />
       </div>
 
       <div class="mt-4">
