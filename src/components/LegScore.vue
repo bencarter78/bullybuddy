@@ -11,7 +11,7 @@
           {{ p.name }}
         </div>
         <div class="text-center font-bold">
-          <span v-if="p.remaining < 0 || p.remaining === 1">
+          <span v-if="p.hasBust" class="uppercase">
             Bust
           </span>
           <span v-else>

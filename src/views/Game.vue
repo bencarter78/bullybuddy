@@ -2,7 +2,7 @@
   <div v-if="player">
     <div class="h-screen text-gray-100 px-8 py-4">
       <div>
-        <div class="flex justify-center font-logo text-3xl">
+        <div class="flex justify-center font-logo text-4xl">
           <router-link :to="{ name: 'home' }">
             BullyBuddy
           </router-link>
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 import Scoreboard from "@/components/Scoreboard";
 import ThrowScore from "@/components/ThrowScore";
 import ScorePad from "@/components/ScorePad";
@@ -42,10 +42,16 @@ export default {
     if (!this.player) {
       this.$router.push("/");
     }
+
+    this.startMatch();
   },
 
   computed: {
     ...mapGetters(["player"])
+  },
+
+  methods: {
+    ...mapMutations(["startMatch"])
   }
 };
 </script>

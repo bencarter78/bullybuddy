@@ -12,50 +12,41 @@
           <div v-if="players.length === 0" class="flex flex-col">
             <button
               @click="setPlayers(1)"
-              class="bg-red-700 py-4 text-red-100 text-center rounded mt-16"
+              class="bg-red-500 py-4 text-red-100 text-center rounded mt-16"
             >
               1 Player
             </button>
 
             <button
               @click="setPlayers(2)"
-              class="bg-red-700 py-4 text-red-100 text-center rounded mt-8"
+              class="bg-red-500 py-4 text-red-100 text-center rounded mt-4"
             >
               2 Players
             </button>
           </div>
 
-          <div v-if="players.length > 0 && !game.type" class="flex flex-col">
+          <div v-if="players.length > 0 && !game" class="flex flex-col">
             <button
-              @click="setGame(501)"
-              class="bg-red-700 py-4 text-red-100 text-center rounded mt-16"
+              v-for="g in [501, 301, 201]"
+              :key="g"
+              @click="setGame(g)"
+              class="bg-red-500 py-4 text-red-100 text-center rounded mt-4"
             >
-              501
+              {{ g }}
             </button>
-
-            <button
-              @click="setGame(50)"
-              class="bg-red-700 py-4 text-red-100 text-center rounded mt-8"
-            >
-              301
-            </button>
-
-            <div class="mt-4 text-gray-100 text-center">
-              <a @click="reset">Back</a>
-            </div>
           </div>
 
           <div v-if="canStartGame" class="flex flex-col">
             <router-link
               :to="{ name: 'game' }"
-              class="bg-green-700 py-4 text-green-100 text-center rounded mt-16"
+              class="bg-green-500 py-4 text-green-100 text-center rounded mt-16"
             >
               Play
             </router-link>
+          </div>
 
-            <div class="mt-4 text-gray-100 text-center">
-              <a @click="reset">Reset</a>
-            </div>
+          <div v-if="players.length" class="mt-4 text-gray-100 text-center">
+            <a @click="reset">Reset</a>
           </div>
         </div>
       </div>

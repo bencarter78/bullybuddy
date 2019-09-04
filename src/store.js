@@ -14,6 +14,7 @@ export default new Vuex.Store({
     currentDart: 1,
     currentPlayer: 0,
     showSingles: false,
+    inProgress: false,
     log: [],
     categories: [
       { name: "Single", multiplyer: 1 },
@@ -28,7 +29,7 @@ export default new Vuex.Store({
 
   getters: {
     canStartGame(state) {
-      return state.players.length && state.game.type;
+      return state.players.length && state.game;
     },
 
     player(state) {
@@ -36,15 +37,21 @@ export default new Vuex.Store({
     },
 
     canCheckout(state) {
-      if (!(state.players && state.game.type)) {
-        return false;
-      }
-
-      return checkouts[state.players[state.currentPlayer].remaining];
+      return state.inProgress
+        ? checkouts[state.players[state.currentPlayer].remaining]
+        : false;
     }
   },
 
   mutations: {
+    startMatch(state) {
+      state.inProgress = true;
+    },
+
+    quitMatch(state) {
+      state.inProgress = false;
+    },
+
     incrementDart(state) {
       if (state.currentDart < 3) {
         state.currentDart += 1;
@@ -82,6 +89,10 @@ export default new Vuex.Store({
 
     setGame(state, type) {
       state.game = new Game(state.players, type);
+    },
+
+    clearGame(state) {
+      state.game = "";
     },
 
     toggleSingles(state) {
@@ -145,8 +156,9 @@ export default new Vuex.Store({
     },
 
     reset({ commit }) {
+      commit("quitMatch");
       commit("setPlayers");
-      commit("setGame");
+      commit("clearGame");
     },
 
     endTurn({ commit }) {

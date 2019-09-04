@@ -2,7 +2,12 @@
   <div>
     <div class="flex justify-center items-baseline">
       <div class="text-right text-6xl leading-none font-score font-bold mr-2">
-        {{ player.remaining }}
+        <span v-if="player.hasBust" class="uppercase">
+          Bust
+        </span>
+        <span v-else>
+          {{ player.remaining }}
+        </span>
       </div>
     </div>
 
