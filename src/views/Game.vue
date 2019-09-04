@@ -9,7 +9,7 @@
         </div>
       </div>
 
-      <div>
+      <div v-if="!isPractice">
         <LegScore />
       </div>
 
@@ -21,7 +21,7 @@
         <ScorePad />
       </div>
 
-      <div class="mt-8">
+      <div v-if="!isPractice" class="mt-8">
         <Scoreboard />
       </div>
     </div>
@@ -47,7 +47,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["player"])
+    ...mapGetters(["player", "isPractice"])
   },
 
   methods: {

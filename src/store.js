@@ -36,6 +36,10 @@ export default new Vuex.Store({
       return state.players[state.currentPlayer];
     },
 
+    isPractice(state) {
+      return state.players.length === 1;
+    },
+
     canCheckout(state) {
       return state.inProgress
         ? checkouts[state.players[state.currentPlayer].remaining]
