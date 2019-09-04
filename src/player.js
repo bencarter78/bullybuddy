@@ -21,7 +21,7 @@ class Player {
 
   get dartsThrown() {
     return [].concat(
-      ...this.matchRounds,
+      ...this.legRounds,
       this.darts.filter(x => typeof x === "number")
     ).length;
   }
@@ -68,6 +68,22 @@ class Player {
 
   get hasHadTurn() {
     return this.darts.filter(x => typeof x === "number").length === 3;
+  }
+
+  get average() {
+    const thrown = [].concat(
+      ...this.matchRounds,
+      ...this.legRounds,
+      this.darts.filter(x => typeof x === "number")
+    );
+
+    if (thrown.length === 0) {
+      return 0;
+    }
+
+    const total = thrown.reduce((carry, item) => carry + item, 0);
+
+    return (total / thrown.length).toFixed(2);
   }
 
   addLeg() {

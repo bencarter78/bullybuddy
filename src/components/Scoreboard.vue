@@ -39,44 +39,58 @@
     </div>
 
     <div class="flex justify-between mt-2">
-      <div class="w-1/3 text-center">
+      <div class="w-1/3 text-center text-gray-500">
         {{ players[0].remaining }}
       </div>
 
-      <div class="w-1/3 text-center text-gray-500">
+      <div class="w-1/3 text-center text-gray-500 text-gray-500">
         Score
       </div>
 
-      <div class="w-1/3 text-center">
+      <div class="w-1/3 text-center text-gray-500">
         {{ players[1].remaining }}
       </div>
     </div>
 
     <div class="flex justify-between mt-2">
-      <div class="w-1/3 text-center">
+      <div class="w-1/3 text-center text-gray-500">
         {{ players[0].legs }}
       </div>
 
-      <div class="w-1/3 text-center text-gray-500">
+      <div class="w-1/3 text-center text-gray-500 text-gray-500">
         Legs
       </div>
 
-      <div class="w-1/3 text-center">
+      <div class="w-1/3 text-center text-gray-500">
         {{ players[1].legs }}
       </div>
     </div>
 
     <div class="flex justify-between mt-2">
-      <div class="w-1/3 text-center">
+      <div class="w-1/3 text-center text-gray-500">
         {{ players[0].sets }}
       </div>
 
-      <div class="w-1/3 text-center text-gray-500">
+      <div class="w-1/3 text-center text-gray-500 text-gray-500">
         Sets
       </div>
 
-      <div class="w-1/3 text-center">
+      <div class="w-1/3 text-center text-gray-500">
         {{ players[1].sets }}
+      </div>
+    </div>
+
+    <div class="flex justify-between mt-2">
+      <div class="w-1/3 text-center text-gray-500">
+        {{ players[0].average }}
+      </div>
+
+      <div class="w-1/3 text-center text-gray-500 text-gray-500">
+        Avg
+      </div>
+
+      <div class="w-1/3 text-center text-gray-500">
+        {{ players[1].average }}
       </div>
     </div>
   </div>

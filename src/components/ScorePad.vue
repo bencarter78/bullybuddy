@@ -26,7 +26,7 @@
 
     <div>
       <button
-        v-if="player.hasHadTurn && !player.hasBust"
+        v-if="player.hasHadTurn && !player.hasWonLeg"
         @click="endTurn"
         class="w-full py-4 mx-auto rounded text-gray-800 border bg-gray-100 mt-4 text-center uppercase tracking-wider"
       >
