@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import Player from "./player";
 import checkouts from "./checkouts";
+import Game from "./game";
 
 Vue.use(Vuex);
 
@@ -27,7 +28,7 @@ export default new Vuex.Store({
 
   getters: {
     canStartGame(state) {
-      return state.players.length && state.game;
+      return state.players.length && state.game.type;
     },
 
     player(state) {
@@ -35,6 +36,10 @@ export default new Vuex.Store({
     },
 
     canCheckout(state) {
+      if (!(state.players && state.game.type)) {
+        return false;
+      }
+
       return checkouts[state.players[state.currentPlayer].remaining];
     }
   },
@@ -65,14 +70,18 @@ export default new Vuex.Store({
     },
 
     setPlayers(state, count) {
-      [...Array(count).keys()].forEach(p => {
-        state.players.push(new Player(`Player ${p + 1}`));
-      });
+      if (!count) {
+        state.players = [];
+        return;
+      }
+
+      [...Array(count).keys()].forEach(p =>
+        state.players.push(new Player(`Player ${p + 1}`))
+      );
     },
 
-    setGame(state, game) {
-      state.players.forEach(p => p.setRemainingInLeg(game));
-      state.game = game;
+    setGame(state, type) {
+      state.game = new Game(state.players, type);
     },
 
     toggleSingles(state) {
@@ -88,20 +97,33 @@ export default new Vuex.Store({
     },
 
     logDarts(state) {
-      state.players[state.currentPlayer].logDarts();
+      state.players[state.currentPlayer].logLegRounds();
     },
 
     resetDarts(state) {
       state.currentDart = 1;
     },
 
+    resetLeg(state) {
+      state.game.resetLeg();
+    },
+
     switchPlayer(state) {
-      // We only want to switch the players if there are 2 players
       if (state.players.length === 1) {
         return;
       }
 
-      state.currentPlayer = state.currentPlayer == 0 ? 1 : 0;
+      if (state.game.isSetWon()) {
+        state.currentPlayer = state.game.playerWithArrowsInSet ? 0 : 1;
+        return state.game.setPlayerWithArrowsInSet(state.currentPlayer);
+      }
+
+      if (state.game.isLegWon()) {
+        state.currentPlayer = state.game.playerWithArrowsInLeg ? 0 : 1;
+        return state.game.setPlayerWithArrowsInLeg(state.currentPlayer);
+      }
+
+      state.currentPlayer = state.currentPlayer ? 0 : 1;
     },
 
     addLegToPlayer(state) {
@@ -123,8 +145,8 @@ export default new Vuex.Store({
     },
 
     reset({ commit }) {
-      commit("setPlayers", 0);
-      commit("setGame", null);
+      commit("setPlayers");
+      commit("setGame");
     },
 
     endTurn({ commit }) {
@@ -133,10 +155,10 @@ export default new Vuex.Store({
       commit("resetDarts");
     },
 
-    legWon({ dispatch, commit, state }) {
+    legWon({ dispatch, commit }) {
       commit("addLegToPlayer");
       dispatch("endTurn");
-      commit("setGame", state.game);
+      commit("resetLeg");
     }
   }
 });

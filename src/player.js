@@ -5,7 +5,8 @@ class Player {
     this.legs = 0;
     this.remainingInLeg = 0;
     this.darts = [null, null, null];
-    this.logs = [];
+    this.matchRounds = [];
+    this.legRounds = [];
   }
 
   setRemainingInLeg(points) {
@@ -20,7 +21,7 @@ class Player {
 
   get dartsThrown() {
     return [].concat(
-      ...this.logs,
+      ...this.matchRounds,
       this.darts.filter(x => typeof x === "number")
     ).length;
   }
@@ -33,18 +34,24 @@ class Player {
     this.darts.splice(dart, 1, score);
   }
 
-  logDarts() {
+  logLegRounds() {
+    // So we don't remove the score from what's remaining,
+    // if the player has bust we'll reset the darts
     if (this.hasBust) {
       this.resetDarts();
     }
 
-    this.logs.push(this.darts);
+    this.legRounds.push(this.darts);
     this.setRemainingInLeg(this.remainingInLeg - this.throwScore);
     this.resetDarts();
   }
 
   resetDarts() {
     this.darts = [null, null, null];
+  }
+
+  resetLegs() {
+    this.legs = 0;
   }
 
   get hasBust() {
@@ -63,17 +70,12 @@ class Player {
     return this.darts.filter(x => typeof x === "number").length === 3;
   }
 
-  get canCheckout() {
-    // this.player.
-  }
-
   addLeg() {
-    if (this.legs < 2) {
-      return (this.legs += 1);
-    }
+    this.legs += 1;
 
-    this.legs = 0;
-    this.sets += 1;
+    if (this.legs === 3) {
+      this.sets += 1;
+    }
   }
 }
 

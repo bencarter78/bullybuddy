@@ -10,7 +10,7 @@
       </div>
 
       <div>
-        <PlayerStats />
+        <LegScore />
       </div>
 
       <div class="mt-8 bg-gray-800">
@@ -33,10 +33,10 @@ import { mapGetters } from "vuex";
 import Scoreboard from "@/components/Scoreboard";
 import ThrowScore from "@/components/ThrowScore";
 import ScorePad from "@/components/ScorePad";
-import PlayerStats from "@/components/PlayerStats";
+import LegScore from "@/components/LegScore";
 
 export default {
-  components: { Scoreboard, ThrowScore, PlayerStats, ScorePad },
+  components: { Scoreboard, ThrowScore, LegScore, ScorePad },
 
   mounted() {
     if (!this.player) {

@@ -25,7 +25,7 @@
             </button>
           </div>
 
-          <div v-if="players.length > 0 && !game" class="flex flex-col">
+          <div v-if="players.length > 0 && !game.type" class="flex flex-col">
             <button
               @click="setGame(501)"
               class="bg-red-700 py-4 text-red-100 text-center rounded mt-16"
@@ -34,14 +34,14 @@
             </button>
 
             <button
-              @click="setGame(301)"
+              @click="setGame(50)"
               class="bg-red-700 py-4 text-red-100 text-center rounded mt-8"
             >
               301
             </button>
 
             <div class="mt-4 text-gray-100 text-center">
-              <a @click="setPlayers(0)">Back</a>
+              <a @click="reset">Back</a>
             </div>
           </div>
 
@@ -70,6 +70,11 @@ export default {
   computed: {
     ...mapState(["players", "game"]),
     ...mapGetters(["canStartGame"])
+  },
+
+  mounted() {
+    this.reset();
+    this.setPlayers();
   },
 
   methods: {
