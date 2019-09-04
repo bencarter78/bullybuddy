@@ -2,15 +2,12 @@
   <div>
     <div class="flex flex-col">
       <div class="flex border-b border-gray-700 py-2">
-        <div class="w-1/4"></div>
-        <div class="w-1/4 text-center">
+        <div class="w-1/3"></div>
+        <div class="w-1/3 text-center">
           Sets
         </div>
-        <div class="w-1/4 text-center">
+        <div class="w-1/3 text-center">
           Legs
-        </div>
-        <div class="w-1/4 text-center">
-          Score
         </div>
       </div>
 
@@ -20,25 +17,17 @@
         class="flex border-b border-gray-700 py-2"
         :class="{ 'text-gray-500 ': currentPlayer !== index }"
       >
-        <div class="w-1/4">
+        <div class="w-1/3">
           {{ p.name }}
           <span v-show="currentPlayer == index" class="text-center w-12">
             &bull;
           </span>
         </div>
-        <div class="w-1/4 text-center">
+        <div class="w-1/3 text-center">
           {{ p.sets }}
         </div>
-        <div class="w-1/4 text-center">
+        <div class="w-1/3 text-center">
           {{ p.legs }}
-        </div>
-        <div class="w-1/4 text-center">
-          <span v-if="p.remaining < 0 || p.remaining === 1">
-            Bust
-          </span>
-          <span v-else>
-            {{ p.remaining }}
-          </span>
         </div>
       </div>
     </div>

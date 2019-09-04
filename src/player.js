@@ -18,6 +18,13 @@ class Player {
       .reduce((carry, item) => carry + parseInt(item), 0);
   }
 
+  get dartsThrown() {
+    return [].concat(
+      ...this.logs,
+      this.darts.filter(x => typeof x === "number")
+    ).length;
+  }
+
   get remaining() {
     return this.remainingInLeg - this.throwScore;
   }

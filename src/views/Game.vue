@@ -1,32 +1,28 @@
 <template>
   <div v-if="player">
-    <div class="text-gray-100 px-8 py-4">
-      <div class="flex justify-center font-logo text-3xl">
-        <router-link :to="{ name: 'home' }">
-          BullyBuddy
-        </router-link>
+    <div class="h-screen text-gray-100 px-8 py-4">
+      <div>
+        <div class="flex justify-center font-logo text-3xl">
+          <router-link :to="{ name: 'home' }">
+            BullyBuddy
+          </router-link>
+        </div>
       </div>
 
-      <div class="mt-4">
-        <Scoreboard />
+      <div>
+        <PlayerStats />
       </div>
 
-      <div class="mt-4">
-        <div class="text-center text-6xl tracking-widest">
-          <span class="">
-            {{ player.throwScore }}
-          </span>
-        </div>
-
-        <div v-if="canCheckout">
-          {{ canCheckout }}
-        </div>
-
-        <DartsButtons class="mt-8" />
+      <div class="mt-8 bg-gray-800">
+        <ThrowScore />
       </div>
 
       <div class="mt-4">
         <ScorePad />
+      </div>
+
+      <div class="mt-8">
+        <Scoreboard />
       </div>
     </div>
   </div>
@@ -35,11 +31,12 @@
 <script>
 import { mapGetters } from "vuex";
 import Scoreboard from "@/components/Scoreboard";
-import DartsButtons from "@/components/DartsButtons";
+import ThrowScore from "@/components/ThrowScore";
 import ScorePad from "@/components/ScorePad";
+import PlayerStats from "@/components/PlayerStats";
 
 export default {
-  components: { Scoreboard, DartsButtons, ScorePad },
+  components: { Scoreboard, ThrowScore, PlayerStats, ScorePad },
 
   mounted() {
     if (!this.player) {
@@ -48,7 +45,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["canCheckout", "player"])
+    ...mapGetters(["player"])
   }
 };
 </script>

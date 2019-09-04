@@ -16,7 +16,7 @@
         <div v-if="!c.hasOwnProperty('score')" class="w-full px-2">
           <button
             @click="selectSegment(c.multiplyer)"
-            class="w-full py-4 rounded text-gray-100 mt-4 text-center uppercase tracking-wider"
+            class="w-full py-4 rounded text-gray-100 mt-4 text-center uppercase text-sm"
             :class="index % 2 === 0 ? 'bg-red-500' : 'bg-green-500'"
           >
             {{ c.name }}
@@ -26,7 +26,7 @@
         <div v-else class="w-full px-2">
           <button
             @click="recordThrow(c.score)"
-            class="w-full py-4 rounded text-gray-100 bg-gray-700 mt-4 text-center uppercase tracking-wider"
+            class="w-full py-4 rounded text-gray-100 bg-gray-700 mt-4 text-center uppercase text-sm"
             :class="index % 2 === 0 ? 'bg-red-500' : 'bg-green-500'"
           >
             {{ c.name }}
@@ -55,7 +55,7 @@
       <button
         v-if="player.hasWonLeg"
         @click="legWon"
-        class="w-full py-4 mx-auto rounded text-green-100 border bg-green-700 mt-4 text-center uppercase tracking-wider"
+        class="w-full py-4 mx-auto rounded text-blue-100 border bg-blue-700 mt-4 text-center uppercase tracking-wider"
       >
         Game Shot
       </button>

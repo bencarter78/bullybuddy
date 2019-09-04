@@ -15,9 +15,9 @@ export default new Vuex.Store({
     showSingles: false,
     log: [],
     categories: [
-      { name: "x1", multiplyer: 1 },
-      { name: "x2", multiplyer: 2 },
-      { name: "x3", multiplyer: 3 },
+      { name: "Single", multiplyer: 1 },
+      { name: "Double", multiplyer: 2 },
+      { name: "Treble", multiplyer: 3 },
       { name: "25", score: 25, multiplyer: 1 },
       { name: "50", score: 50, multiplyer: 1 },
       { name: "0", score: 0, multiplyer: 1 }
@@ -97,9 +97,11 @@ export default new Vuex.Store({
 
     switchPlayer(state) {
       // We only want to switch the players if there are 2 players
-      if (state.players.length == 2) {
-        state.currentPlayer = state.currentPlayer == 0 ? 1 : 0;
+      if (state.players.length === 1) {
+        return;
       }
+
+      state.currentPlayer = state.currentPlayer == 0 ? 1 : 0;
     },
 
     addLegToPlayer(state) {

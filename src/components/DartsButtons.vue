@@ -4,16 +4,21 @@
       v-for="n in [1, 2, 3]"
       :key="n"
       @click="setCurrentDart(n)"
-      class="w-full border border-gray-700 text-center px-3 py-1 rounded text-gray-100 mx-2"
+      class="w-full border border-gray-700 text-center text-sm px-3 py-1 rounded text-gray-500 mx-2"
       :class="{
-        'bg-gray-700 border-gray-700': currentDart == n
+        'bg-blue-700 border-blue-700 text-blue-100': currentDart == n
       }"
     >
-      <span v-if="typeof player.darts[n - 1] === 'number'">
-        {{ player.darts[n - 1] }}
-      </span>
+      <div v-if="showSingles && currentDart === n">
+        Cancel
+      </div>
+      <div v-else>
+        <span v-if="typeof player.darts[n - 1] === 'number'">
+          {{ player.darts[n - 1] }}
+        </span>
 
-      <span v-else> Dart {{ n }} </span>
+        <span v-else> Dart {{ n }} </span>
+      </div>
     </li>
   </ul>
 </template>
@@ -23,7 +28,7 @@ import { mapGetters, mapMutations, mapState } from "vuex";
 
 export default {
   computed: {
-    ...mapState(["currentDart"]),
+    ...mapState(["currentDart", "showSingles"]),
     ...mapGetters(["player"])
   },
 
