@@ -1,17 +1,6 @@
 <template>
   <div class="flex flex-col">
-    <div v-if="showSingles" class="flex flex-wrap mt-4">
-      <div class="w-1/4 p-2" v-for="n in segments" :key="n">
-        <button
-          @click="recordThrow(n)"
-          class="text-center w-full bg-gray-700 rounded py-4 text-gray-100"
-        >
-          {{ n }}
-        </button>
-      </div>
-    </div>
-
-    <div v-else class="flex flex-wrap -mx-2">
+    <div class="flex flex-wrap -mx-2">
       <div v-for="(c, index) in categories" :key="index" class="w-1/3">
         <div v-if="!c.hasOwnProperty('score')" class="w-full px-2">
           <button

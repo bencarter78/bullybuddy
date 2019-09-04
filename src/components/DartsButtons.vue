@@ -9,16 +9,11 @@
         'bg-blue-700 border-blue-700 text-blue-100': currentDart == n
       }"
     >
-      <div v-if="showSingles && currentDart === n">
-        Cancel
-      </div>
-      <div v-else>
-        <span v-if="typeof player.darts[n - 1] === 'number'">
-          {{ player.darts[n - 1] }}
-        </span>
+      <span v-if="typeof player.darts[n - 1] === 'number'">
+        {{ player.darts[n - 1] }}
+      </span>
 
-        <span v-else> Dart {{ n }} </span>
-      </div>
+      <span v-else> Dart {{ n }} </span>
     </li>
   </ul>
 </template>

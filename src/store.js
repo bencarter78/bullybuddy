@@ -22,7 +22,7 @@ export default new Vuex.Store({
       { name: "Treble", multiplyer: 3 },
       { name: "25", score: 25, multiplyer: 1 },
       { name: "50", score: 50, multiplyer: 1 },
-      { name: "0", score: 0, multiplyer: 1 }
+      { name: "-", score: 0, multiplyer: 1 }
     ],
     multiplyer: 1
   },

@@ -9,34 +9,36 @@
         </div>
       </div>
 
-      <div v-if="!isPractice">
-        <LegScore />
-      </div>
-
-      <div class="mt-8 bg-gray-800">
-        <ThrowScore />
-      </div>
-
-      <div class="mt-4">
-        <ScorePad />
-      </div>
-
-      <div v-if="!isPractice" class="mt-8">
+      <div v-if="!isPractice" class="mt-4">
         <Scoreboard />
+      </div>
+
+      <div v-if="showSingles">
+        <SinglesButtons />
+      </div>
+
+      <div v-else>
+        <div class="mt-12 bg-gray-800">
+          <ThrowScore />
+        </div>
+
+        <div class="mt-4">
+          <ScorePad />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters, mapMutations, mapState } from "vuex";
 import Scoreboard from "@/components/Scoreboard";
 import ThrowScore from "@/components/ThrowScore";
 import ScorePad from "@/components/ScorePad";
-import LegScore from "@/components/LegScore";
+import SinglesButtons from "@/components/SinglesButtons";
 
 export default {
-  components: { Scoreboard, ThrowScore, LegScore, ScorePad },
+  components: { Scoreboard, ScorePad, SinglesButtons, ThrowScore },
 
   mounted() {
     if (!this.player) {
@@ -47,11 +49,12 @@ export default {
   },
 
   computed: {
+    ...mapState(["showSingles", "segments"]),
     ...mapGetters(["player", "isPractice"])
   },
 
   methods: {
-    ...mapMutations(["startMatch"])
+    ...mapMutations(["clearSingles", "startMatch"])
   }
 };
 </script>

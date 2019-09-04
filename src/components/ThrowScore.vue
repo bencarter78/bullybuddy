@@ -11,7 +11,7 @@
       </div>
     </div>
 
-    <div v-show="canCheckout" class="flex justify-center">
+    <div v-show="canCheckout" class="flex justify-center mt-4">
       <div
         v-for="(d, index) in canCheckout"
         :key="index"
