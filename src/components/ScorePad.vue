@@ -11,21 +11,23 @@
       </div>
     </div>
 
-    <div v-else class="flex flex-wrap -mx-1">
+    <div v-else class="flex flex-wrap -mx-2">
       <div v-for="(c, index) in categories" :key="index" class="w-1/3">
-        <div v-if="!c.hasOwnProperty('score')" class="w-full px-1">
+        <div v-if="!c.hasOwnProperty('score')" class="w-full px-2">
           <button
             @click="selectSegment(c.multiplyer)"
-            class="w-full py-4 rounded text-gray-100 bg-gray-700 mt-4 text-center uppercase tracking-wider"
+            class="w-full py-4 rounded text-gray-100 mt-4 text-center uppercase tracking-wider"
+            :class="index % 2 === 0 ? 'bg-red-500' : 'bg-green-500'"
           >
             {{ c.name }}
           </button>
         </div>
 
-        <div v-else class="w-full px-1">
+        <div v-else class="w-full px-2">
           <button
             @click="recordThrow(c.score)"
             class="w-full py-4 rounded text-gray-100 bg-gray-700 mt-4 text-center uppercase tracking-wider"
+            :class="index % 2 === 0 ? 'bg-red-500' : 'bg-green-500'"
           >
             {{ c.name }}
           </button>

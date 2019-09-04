@@ -33,7 +33,12 @@
           {{ p.legs }}
         </div>
         <div class="w-1/4 text-center">
-          {{ p.remaining }}
+          <span v-if="p.remaining < 0 || p.remaining === 1">
+            Bust
+          </span>
+          <span v-else>
+            {{ p.remaining }}
+          </span>
         </div>
       </div>
     </div>

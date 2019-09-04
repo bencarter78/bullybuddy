@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import Player from "./player";
+import checkouts from "./checkouts";
 
 Vue.use(Vuex);
 
@@ -14,18 +15,12 @@ export default new Vuex.Store({
     showSingles: false,
     log: [],
     categories: [
-      // { name: "Single", multiplyer: 1 },
-      // { name: "Double", multiplyer: 2 },
-      // { name: "Treble", multiplyer: 3 },
-      // { name: "Outer Bull", score: 25, multiplyer: 1 },
-      // { name: "Bull", score: 50, multiplyer: 1 },
-      // { name: "Miss", score: 0, multiplyer: 1 }
       { name: "x1", multiplyer: 1 },
       { name: "x2", multiplyer: 2 },
       { name: "x3", multiplyer: 3 },
-      { name: "OB", score: 25, multiplyer: 1 },
-      { name: "B", score: 50, multiplyer: 1 },
-      { name: "-", score: 0, multiplyer: 1 }
+      { name: "25", score: 25, multiplyer: 1 },
+      { name: "50", score: 50, multiplyer: 1 },
+      { name: "0", score: 0, multiplyer: 1 }
     ],
     multiplyer: 1
   },
@@ -37,6 +32,10 @@ export default new Vuex.Store({
 
     player(state) {
       return state.players[state.currentPlayer];
+    },
+
+    canCheckout(state) {
+      return checkouts[state.players[state.currentPlayer].remaining];
     }
   },
 

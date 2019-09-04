@@ -56,6 +56,10 @@ class Player {
     return this.darts.filter(x => typeof x === "number").length === 3;
   }
 
+  get canCheckout() {
+    // this.player.
+  }
+
   addLeg() {
     if (this.legs < 2) {
       return (this.legs += 1);

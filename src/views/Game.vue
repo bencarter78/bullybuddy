@@ -18,6 +18,10 @@
           </span>
         </div>
 
+        <div v-if="canCheckout">
+          {{ canCheckout }}
+        </div>
+
         <DartsButtons class="mt-8" />
       </div>
 
@@ -44,7 +48,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["player"])
+    ...mapGetters(["canCheckout", "player"])
   }
 };
 </script>
