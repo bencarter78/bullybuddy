@@ -102,6 +102,10 @@ export default new Vuex.Store({
       state.game = new Game(state.players, type);
     },
 
+    setCurrentDart(state, dart) {
+      state.game.currentDart = dart;
+    },
+
     clearGame(state) {
       state.game = "";
     },
