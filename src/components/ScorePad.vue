@@ -1,29 +1,5 @@
 <template>
   <div class="flex flex-col">
-    <div class="flex flex-wrap -mx-2">
-      <div v-for="(c, index) in categories" :key="index" class="w-1/3">
-        <div v-if="c.hasOwnProperty('value')" class="w-full px-2">
-          <button
-            @click="recordThrow({ type: c.name, value: c.value })"
-            class="w-full py-4 rounded text-gray-100 bg-gray-700 mt-4 text-center uppercase text-sm"
-            :class="index % 2 === 0 ? 'bg-red-500' : 'bg-green-500'"
-          >
-            {{ c.name }}
-          </button>
-        </div>
-
-        <div v-else class="w-full px-2">
-          <button
-            @click="selectSegment(c)"
-            class="w-full py-4 rounded text-gray-100 mt-4 text-center uppercase text-sm"
-            :class="index % 2 === 0 ? 'bg-red-500' : 'bg-green-500'"
-          >
-            {{ c.name }}
-          </button>
-        </div>
-      </div>
-    </div>
-
     <div>
       <button
         v-if="player.hasHadTurn && !player.hasWonLeg"
@@ -48,6 +24,40 @@
       >
         Game Shot
       </button>
+    </div>
+
+    <div class="flex flex-wrap -mx-2 mt-2">
+      <div
+        v-for="(c, index) in categories"
+        :key="index"
+        class="w-1/3"
+      >
+        <div
+          v-if="c.hasOwnProperty('value')"
+          class="w-full px-2"
+        >
+          <button
+            @click="recordThrow({ type: c.name, value: c.value })"
+            class="w-full py-4 rounded text-gray-100 bg-gray-700 mt-4 text-center uppercase text-sm"
+            :class="index % 2 === 0 ? 'bg-red-500' : 'bg-green-500'"
+          >
+            {{ c.name }}
+          </button>
+        </div>
+
+        <div
+          v-else
+          class="w-full px-2"
+        >
+          <button
+            @click="selectSegment(c)"
+            class="w-full py-4 rounded text-gray-100 mt-4 text-center uppercase text-sm"
+            :class="index % 2 === 0 ? 'bg-red-500' : 'bg-green-500'"
+          >
+            {{ c.name }}
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
