@@ -27,7 +27,7 @@
 
           <div v-if="players.length > 0 && !game" class="flex flex-col">
             <button
-              v-for="g in [501, 301, 201]"
+              v-for="g in [501, 301, 201, 50, 25]"
               :key="g"
               @click="setGame(g)"
               class="bg-red-500 py-4 text-red-100 text-center rounded mt-4"

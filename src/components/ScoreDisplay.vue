@@ -11,9 +11,9 @@
       </div>
     </div>
 
-    <div v-show="canCheckout" class="flex justify-center mt-4">
+    <div v-show="checkout" class="flex justify-center mt-4">
       <div
-        v-for="(d, index) in canCheckout"
+        v-for="(d, index) in checkout"
         :key="index"
         class="mx-2 text-4xl text-gray-500"
       >
@@ -31,7 +31,7 @@ import DartsButtons from "@/components/DartsButtons";
 export default {
   components: { DartsButtons },
   computed: {
-    ...mapGetters(["canCheckout", "player"])
+    ...mapGetters(["checkout", "player"])
   }
 };
 </script>

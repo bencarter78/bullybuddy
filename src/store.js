@@ -1,8 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import Player from "./player";
-import checkouts from "./checkouts";
 import Game from "./game";
+import { Single, OuterBull, Bull, Miss, Double, Treble } from "./darts";
 
 Vue.use(Vuex);
 
@@ -11,73 +11,80 @@ export default new Vuex.Store({
     players: [],
     game: "",
     segments: [...Array(21).keys()].reverse().slice(0, 20),
-    currentDart: 1,
-    currentPlayer: 0,
-    showSingles: false,
-    inProgress: false,
-    log: [],
+    singlesType: false,
     categories: [
-      { name: "Single", multiplyer: 1 },
-      { name: "Double", multiplyer: 2 },
-      { name: "Treble", multiplyer: 3 },
-      { name: "25", score: 25, multiplyer: 1 },
-      { name: "50", score: 50, multiplyer: 1 },
-      { name: "-", score: 0, multiplyer: 1 }
-    ],
-    multiplyer: 1
+      { name: "Single" },
+      { name: "Double" },
+      { name: "Treble" },
+      { name: "25", value: 25 },
+      { name: "50", value: 50 },
+      { name: "-", value: 0 }
+    ]
   },
 
   getters: {
     canStartGame(state) {
-      return state.players.length && state.game;
+      return state.game ? state.game.canStart : false;
     },
 
     player(state) {
-      return state.players[state.currentPlayer];
+      return state.game.onOche;
     },
 
     isPractice(state) {
-      return state.players.length === 1;
+      return state.game.isPractice;
     },
 
-    canCheckout(state) {
-      return state.inProgress
-        ? checkouts[state.players[state.currentPlayer].remaining]
-        : false;
+    checkout(state) {
+      return state.game.checkout;
+    },
+
+    currentDart(state) {
+      return state.game.currentDart;
+    },
+
+    playerWithDarts(state) {
+      return state.game.playerWithArrowsInSet;
     }
   },
 
   mutations: {
     startMatch(state) {
-      state.inProgress = true;
+      if (state.game) {
+        state.game.start();
+      }
     },
 
     quitMatch(state) {
-      state.inProgress = false;
-    },
-
-    incrementDart(state) {
-      if (state.currentDart < 3) {
-        state.currentDart += 1;
+      if (state.game) {
+        state.game.quit();
       }
     },
 
-    decrementDart(state) {
-      if (state.currentDart > 0) {
-        state.currentDart -= 1;
+    addThrownDart(state, { type, value }) {
+      let dart;
+
+      switch (type) {
+        case "Miss":
+          dart = new Miss(value);
+          break;
+        case "Double":
+          dart = new Double(value);
+          break;
+        case "Treble":
+          dart = new Treble(value);
+          break;
+        case "25":
+          dart = new OuterBull(value);
+          break;
+        case "50":
+          dart = new Bull(value);
+          break;
+        default:
+          dart = new Single(value);
       }
-    },
 
-    setCurrentDart(state, dart) {
-      state.currentDart = dart;
-      state.showSingles = false;
-    },
-
-    addThrownDart(state, score) {
-      return state.players[state.currentPlayer].scoreDart(
-        state.currentDart - 1,
-        score * state.multiplyer
-      );
+      state.game.addScore(dart);
     },
 
     setPlayers(state, count) {
@@ -99,82 +106,37 @@ export default new Vuex.Store({
       state.game = "";
     },
 
-    toggleSingles(state) {
-      state.showSingles = !state.showSingles;
+    setSinglesType(state, type) {
+      state.singlesType = type;
     },
 
-    clearSingles(state) {
-      state.showSingles = false;
+    clearSinglesType(state) {
+      state.singlesType = "";
     },
 
-    setMultiplyer(state, value) {
-      state.multiplyer = value;
-    },
-
-    logDarts(state) {
-      state.players[state.currentPlayer].logLegRounds();
-    },
-
-    resetDarts(state) {
-      state.currentDart = 1;
-    },
-
-    resetLeg(state) {
-      state.game.resetLeg();
-    },
-
-    switchPlayer(state) {
-      if (state.players.length === 1) {
-        return;
-      }
-
-      if (state.game.isSetWon()) {
-        state.currentPlayer = state.game.playerWithArrowsInSet ? 0 : 1;
-        return state.game.setPlayerWithArrowsInSet(state.currentPlayer);
-      }
-
-      if (state.game.isLegWon()) {
-        state.currentPlayer = state.game.playerWithArrowsInLeg ? 0 : 1;
-        return state.game.setPlayerWithArrowsInLeg(state.currentPlayer);
-      }
-
-      state.currentPlayer = state.currentPlayer ? 0 : 1;
-    },
-
-    addLegToPlayer(state) {
-      state.players[state.currentPlayer].addLeg();
+    endTurn(state) {
+      state.game.endTurn();
     }
   },
 
   actions: {
-    recordThrow({ commit }, score) {
-      commit("addThrownDart", score);
-      commit("incrementDart");
-      commit("clearSingles");
-      commit("setMultiplyer", 1);
+    recordThrow({ commit }, { type, value }) {
+      commit("addThrownDart", { type, value });
+      commit("clearSinglesType");
     },
 
-    selectSegment({ commit }, multiplyer) {
-      commit("toggleSingles");
-      commit("setMultiplyer", multiplyer);
+    endTurn({ commit }) {
+      commit("endTurn");
+    },
+
+    selectSegment({ commit }, type) {
+      commit("setSinglesType", type.name);
     },
 
     reset({ commit }) {
       commit("quitMatch");
       commit("setPlayers");
       commit("clearGame");
-    },
-
-    endTurn({ commit }) {
-      commit("logDarts");
-      commit("switchPlayer");
-      commit("resetDarts");
-    },
-
-    legWon({ dispatch, commit }) {
-      commit("addLegToPlayer");
-      dispatch("endTurn");
-      commit("resetLeg");
     }
   }
 });

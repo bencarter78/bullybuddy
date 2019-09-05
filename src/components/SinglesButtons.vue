@@ -3,7 +3,7 @@
     <div class="flex flex-wrap mt-4 -mx-2">
       <div class="w-1/4 p-2" v-for="n in segments" :key="n">
         <button
-          @click="recordThrow(n)"
+          @click="recordThrow({ type: singlesType, value: n })"
           class="text-center w-full bg-gray-700 rounded py-4 text-gray-100"
         >
           {{ n }}
@@ -23,7 +23,7 @@ import { mapActions, mapMutations, mapState } from "vuex";
 
 export default {
   computed: {
-    ...mapState(["segments"])
+    ...mapState(["segments", "singlesType"])
   },
 
   methods: {

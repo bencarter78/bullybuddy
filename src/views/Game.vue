@@ -13,13 +13,13 @@
         <Scoreboard />
       </div>
 
-      <div v-if="showSingles">
+      <div v-if="singlesType">
         <SinglesButtons />
       </div>
 
       <div v-else>
         <div class="mt-12 bg-gray-800">
-          <ThrowScore />
+          <ScoreDisplay />
         </div>
 
         <div class="mt-4">
@@ -33,12 +33,12 @@
 <script>
 import { mapGetters, mapMutations, mapState } from "vuex";
 import Scoreboard from "@/components/Scoreboard";
-import ThrowScore from "@/components/ThrowScore";
+import ScoreDisplay from "@/components/ScoreDisplay";
 import ScorePad from "@/components/ScorePad";
 import SinglesButtons from "@/components/SinglesButtons";
 
 export default {
-  components: { Scoreboard, ScorePad, SinglesButtons, ThrowScore },
+  components: { Scoreboard, ScorePad, SinglesButtons, ScoreDisplay },
 
   mounted() {
     if (!this.player) {
@@ -49,7 +49,7 @@ export default {
   },
 
   computed: {
-    ...mapState(["showSingles", "segments"]),
+    ...mapState(["singlesType", "segments"]),
     ...mapGetters(["player", "isPractice"])
   },
 

@@ -1,5 +1,8 @@
+import uuid from "uuid/v4";
+
 class Player {
   constructor(name) {
+    this.uuid = uuid();
     this.name = name;
     this.sets = 0;
     this.legs = 0;
@@ -7,51 +10,25 @@ class Player {
     this.darts = [null, null, null];
     this.matchRounds = [];
     this.legRounds = [];
+    this.allRounds = [];
   }
 
-  setRemainingInLeg(points) {
-    this.remainingInLeg = points;
-  }
-
-  get throwScore() {
+  get roundScore() {
     return this.darts
-      .filter(Number)
-      .reduce((carry, item) => carry + parseInt(item), 0);
+      .filter(x => x)
+      .reduce((carry, item) => carry + item.score, 0);
   }
 
-  get dartsThrown() {
-    return [].concat(
-      ...this.legRounds,
-      this.darts.filter(x => typeof x === "number")
-    ).length;
+  get dartsThrownInLeg() {
+    return [].concat(...this.legRounds, this.darts.filter(x => x)).length;
   }
 
   get remaining() {
-    return this.remainingInLeg - this.throwScore;
+    return this.remainingInLeg - this.roundScore;
   }
 
-  scoreDart(dart, score) {
-    this.darts.splice(dart, 1, score);
-  }
-
-  logLegRounds() {
-    // So we don't remove the score from what's remaining,
-    // if the player has bust we'll reset the darts
-    if (this.hasBust) {
-      this.resetDarts();
-    }
-
-    this.legRounds.push(this.darts);
-    this.setRemainingInLeg(this.remainingInLeg - this.throwScore);
-    this.resetDarts();
-  }
-
-  resetDarts() {
-    this.darts = [null, null, null];
-  }
-
-  resetLegs() {
-    this.legs = 0;
+  get hasHadTurn() {
+    return this.darts.filter(x => x).length === 3;
   }
 
   get hasBust() {
@@ -66,32 +43,64 @@ class Player {
     return this.remaining === 0;
   }
 
-  get hasHadTurn() {
-    return this.darts.filter(x => typeof x === "number").length === 3;
+  // get average() {
+  //   if (this.allRounds.length === 0) {
+  //     return 0;
+  //   }
+
+  //   let rounds = this.allRounds.map(round => {
+  //     return round
+  //       .filter(x => x)
+  //       .reduce((carry, item) => carry + item.score, 0);
+  //   });
+
+  //   return (
+  //     (rounds.reduce((carry, item) => carry + item, 0) + this.roundScore) /
+  //     rounds.length
+  //   );
+  // }
+
+  setRemainingInLeg(points) {
+    this.remainingInLeg = points;
   }
 
-  get average() {
-    const thrown = [].concat(
-      ...this.matchRounds,
-      ...this.legRounds,
-      this.darts.filter(x => typeof x === "number")
-    );
+  addDart(roundDart, dart) {
+    this.darts.splice(roundDart, 1, dart);
+  }
 
-    if (thrown.length === 0) {
-      return 0;
+  logRound() {
+    // So we don't remove the score from what's remaining,
+    // if the player has bust we'll reset the darts
+    if (this.hasBust) {
+      this.resetRound();
     }
 
-    const total = thrown.reduce((carry, item) => carry + item, 0);
+    this.legRounds.push(this.darts);
+    this.allRounds.push(this.darts);
+    this.setRemainingInLeg(this.remainingInLeg - this.roundScore);
+    this.resetRound();
+  }
 
-    return (total / thrown.length).toFixed(2);
+  resetLegsWon() {
+    this.legs = 0;
+    this.resetRound();
+  }
+
+  resetRound() {
+    this.darts = [null, null, null];
   }
 
   addLeg() {
     this.legs += 1;
+  }
 
-    if (this.legs === 3) {
-      this.sets += 1;
-    }
+  logMatchRounds() {
+    this.matchRounds.push(this.legRounds);
+    this.legRounds = [];
+  }
+
+  addSet() {
+    this.sets += 1;
   }
 }
 
